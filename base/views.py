@@ -18,9 +18,14 @@ def home(request):
     # Muestra los 3 posts destacados y activos en la página principal
     posts = Post.objects.filter(active=True, featured=True)[0:3]
     
-    # Lógica para mostrar siempre el perfil del administrador (tú)
+    # Lógica para mostrar siempre el perfil del administrador (tú), protegiendo contra errores
     admin_user = User.objects.filter(is_superuser=True).first()
-    profile = admin_user.profile if admin_user else None
+    profile = None
+    if admin_user:
+        try:
+            profile = admin_user.profile
+        except Profile.DoesNotExist:
+            profile = None
     
     return render(request, 'base/index.html', {'posts': posts, 'profile': profile})
 
@@ -53,8 +58,13 @@ def post(request, slug):
 def profile(request):
     # Muestra el perfil (similar al index pero sin los posts)
     admin_user = User.objects.filter(is_superuser=True).first()
-    profile = admin_user.profile if admin_user else None
-    return render(request, 'base/profile.html', {'profile': profile})
+    profile_obj = None
+    if admin_user:
+        try:
+            profile_obj = admin_user.profile
+        except Profile.DoesNotExist:
+            profile_obj = None
+    return render(request, 'base/profile.html', {'profile': profile_obj})
 
 # --- CRUD DE POSTS (Solo para superusuarios) ---
 
@@ -102,7 +112,7 @@ def sendEmail(request):
         email = EmailMessage(
             request.POST['subject'],
             template,
-            settings.DEFAULT_FROM_EMAIL, # <-- CORREGIDO: Funciona en desarrollo y producción
+            settings.DEFAULT_FROM_EMAIL,
             ['alijcolina@gmail.com']
         )
         email.fail_silently = False

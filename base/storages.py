@@ -35,7 +35,6 @@ class SupabaseStorage(Storage):
         return False
 
     def url(self, name):
-        # Manejo del caso en que name sea None o vacío (evita el TypeError)
         if not name:
             return ""
         if name.startswith("http"):

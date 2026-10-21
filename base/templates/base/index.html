@@ -14,14 +14,14 @@
     <section class="s1">
         <div class="main-container">
             <div class="greeting-wrapper">
-                <h1>Hola, soy {{ profile.first_name }} {{ profile.last_name }}</h1>
+                <h1>Hola, soy {% if profile %}{{ profile.first_name }} {{ profile.last_name }}{% else %}Ali Colina{% endif %}</h1>
             </div>
 
             <div class="intro-wrapper">
                 {% include 'base/navbar.html' %}
 
                 <div class="left-column">
-                    {% if profile.profile_pic %}
+                    {% if profile and profile.profile_pic %}
                         <img id="profile_pic" src="{{ profile.profile_pic.url }}" alt="Foto de perfil">
                     {% else %}
                         <img id="profile_pic" src="{% static 'images/user.png' %}" alt="Foto de perfil">
@@ -43,7 +43,7 @@
                             <div id="corner-tl" class="corner"></div>
                             <div id="corner-tr" class="corner"></div>
                             <h3>Qué hago</h3>
-                            <p>{{ profile.bio|truncatechars:150 }}</p>
+                            <p>{% if profile %}{{ profile.bio|truncatechars:150 }}{% else %}Desarrollador Full-Stack{% endif %}</p>
                             <div id="corner-br" class="corner"></div>
                             <div id="corner-bl" class="corner"></div>
                         </div>
@@ -58,7 +58,7 @@
             <div class="about-wrapper">
                 <div class="about-me">
                     <h4>Más sobre mí</h4>
-                    <p>{{ profile.bio }}</p>
+                    <p>{% if profile %}{{ profile.bio }}{% else %}Bienvenido a mi portafolio.{% endif %}</p>
 
                     <div style="margin-top: 20px; margin-bottom: 20px;">
                         <a href="{% static 'docs/CV_Ali_Colina.pdf' %}" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 10px;">📄 Ver mi CV</a>
@@ -88,7 +88,7 @@
                 
                 <div class="social-links">
                     <h3>Encuéntrame en</h3>
-                    {% if profile.x %}
+                    {% if profile and profile.x %}
                         <a target="_blank" href="{{ profile.x }}">Mi GitHub / Perfil Profesional</a>
                     {% endif %}
                 </div>
