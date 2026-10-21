@@ -19,5 +19,5 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(PostComment)
 class PostCommentAdmin(admin.ModelAdmin):
-    list_display = ('author', 'post', 'created')
+    list_display = ('post', 'created')
     list_filter = ('created',)
