@@ -18,8 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.getenv('DEBUG', 'False') == 'True'
-DEBUG = True
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True  # Lo dejamos en True para ver errores en Render por ahora
 # Permitir todos los hosts en Render
 ALLOWED_HOSTS = ['*']
 
@@ -121,6 +121,11 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+# ==============================================================================
+# IMGBB (Para las imágenes dinámicas)
+# ==============================================================================
+IMGBB_API_KEY = os.getenv('IMGBB_API_KEY', 'e475f174ec0e50918d2c9204be48ddd9')
 
 # ==============================================================================
 # CORREO (Resend)

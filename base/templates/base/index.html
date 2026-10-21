@@ -21,8 +21,11 @@
                 {% include 'base/navbar.html' %}
 
                 <div class="left-column">
-                    <!-- Imagen estática de perfil -->
-                    <img id="profile_pic" src="{% static 'images/' %}{{ profile.profile_pic }}" alt="Foto de perfil">
+                    {% if profile.profile_pic %}
+                        <img id="profile_pic" src="{{ profile.profile_pic.url }}" alt="Foto de perfil">
+                    {% else %}
+                        <img id="profile_pic" src="{% static 'images/user.png' %}" alt="Foto de perfil">
+                    {% endif %}
                     
                     <h5 style="text-align: center;line-height: 0;">Personalizar Tema</h5>
                     <div id="theme-options-wrapper">
@@ -100,8 +103,11 @@
                 {% for post in posts %}
                 <div>
                     <div class="post">
-                        <!-- Imagen estática del proyecto -->
-                        <img class="thumbnail" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
+                        {% if post.thumbnail %}
+                            <img class="thumbnail" src="{{ post.thumbnail.url }}" alt="{{ post.headline }}">
+                        {% else %}
+                            <img class="thumbnail" src="{% static 'images/placeholder.png' %}" alt="{{ post.headline }}">
+                        {% endif %}
                         <div class="post-preview">
                             <h6 class="post-title">{{post.headline}}</h6>
                             <p class="post-intro">{{post.sub_headline}}</p>
