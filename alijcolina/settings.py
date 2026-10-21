@@ -98,12 +98,10 @@ USE_TZ = True
 # CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS Y MEDIA
 # ==============================================================================
 
-# Archivos estáticos (CSS, JavaScript, imágenes fijas del sitio)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Archivos subidos por usuarios (fotos de perfil, miniaturas de proyectos)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -129,3 +127,6 @@ else:
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Al final del archivo settings.py
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
