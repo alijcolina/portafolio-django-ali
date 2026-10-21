@@ -26,9 +26,8 @@
         <a class="btn btn-sm btn-success" href="{{ post.project_url }}" target="_blank">Ver Proyecto en Vivo</a>
     {% endif %}
 
-    {% if post.thumbnail %}
-        <img class="featured_image" src="{{ post.thumbnail.url }}" alt="{{ post.headline }}">
-    {% endif %}
+    <!-- Imagen estática: ecommerce_preview.jpg -->
+    <img class="featured_image" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
 
     {% for tag in post.tags.all %}
         <span class="tag">{{tag}}</span>
@@ -59,8 +58,9 @@
         <hr>
         {% for comment in post.postcomment_set.all %}
             <div class="comment">
+                <!-- Imagen estática: perfil.jpg para los comentarios -->
                 {% if comment.author.profile_pic %}
-                    <img class="author-pic" src="{{ comment.author.profile_pic.url }}" alt="Autor">
+                    <img class="author-pic" src="{% static 'images/' %}{{ comment.author.profile_pic }}" alt="Autor">
                 {% else %}
                     <img class="author-pic" src="{% static 'images/user.png' %}" alt="Autor">
                 {% endif %}
