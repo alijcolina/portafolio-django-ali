@@ -21,7 +21,7 @@
                 {% include 'base/navbar.html' %}
 
                 <div class="left-column">
-                    <!-- Imagen estática desde static/images/ -->
+                    <!-- Imagen estática -->
                     <img id="profile_pic" src="{% static 'images/' %}{{ profile.profile_pic }}" alt="Foto de perfil">
                     
                     <h5 style="text-align: center;line-height: 0;">Personalizar Tema</h5>
@@ -100,7 +100,7 @@
                 {% for post in posts %}
                 <div>
                     <div class="post">
-                        <!-- Miniatura estática desde static/images/ -->
+                        <!-- Imagen estática del proyecto -->
                         <img class="thumbnail" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
                         <div class="post-preview">
                             <h6 class="post-title">{{post.headline}}</h6>

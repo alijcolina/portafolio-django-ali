@@ -3,7 +3,6 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
-
 <style type="text/css">
 	#div_id_tags, #id_tags{
 		overflow-y: scroll;
@@ -30,7 +29,6 @@
 		{% for post in posts %}
 		<div>
 			<div class="post">
-				<!-- CORREGIDO: Imagen estática -->
 				<img class="thumbnail" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
 				<div class="post-preview">
 					<h6 class="post-title">{{post.headline}}</h6>

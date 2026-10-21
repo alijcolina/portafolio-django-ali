@@ -23,5 +23,5 @@ class PostCommentAdmin(admin.ModelAdmin):
     list_display = ('post', 'created')
     list_filter = ('created',)
 
-# Desregistrar Group para evitar el error 500 en el admin
+# Desregistrar Group para evitar errores
 admin.site.unregister(Group)

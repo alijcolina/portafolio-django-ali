@@ -26,7 +26,7 @@
         <a class="btn btn-sm btn-success" href="{{ post.project_url }}" target="_blank">Ver Proyecto en Vivo</a>
     {% endif %}
 
-    <!-- Imagen estática del proyecto -->
+    <!-- Imagen estática -->
     <img class="featured_image" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
 
     {% for tag in post.tags.all %}
