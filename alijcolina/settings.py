@@ -13,7 +13,8 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-me')
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True  # Forzar True temporalmente para ver el error real
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
