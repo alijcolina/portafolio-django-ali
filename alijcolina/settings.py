@@ -91,3 +91,6 @@ ANYMAIL = {'RESEND_API_KEY': os.getenv('RESEND_API_KEY')}
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Portafolio Ali <onboarding@resend.dev>')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SUPABASE_URL = os.getenv('SUPABASE_URL')
+SUPABASE_KEY = os.getenv('SUPABASE_KEY')

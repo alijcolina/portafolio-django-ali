@@ -1,45 +1,34 @@
-import base64
 import requests
 from django.conf import settings
 from django.core.files.storage import Storage
 from django.utils.deconstruct import deconstructible
 
 @deconstructible
-class ImgBBStorage(Storage):
+class SupabaseStorage(Storage):
+    def __init__(self, *args, **kwargs):
+        self.url = settings.SUPABASE_URL
+        self.key = settings.SUPABASE_KEY
+        self.bucket = "media"
+
     def _save(self, name, content):
         content.seek(0)
         file_data = content.read()
+        file_name = name.replace(" ", "_")
         
-        # Codificar en base64 (método estándar para ImgBB)
-        b64_image = base64.b64encode(file_data).decode('utf-8')
-        
-        api_key = getattr(settings, 'IMGBB_API_KEY', None)
-        if not api_key:
-            raise ValueError("Falta IMGBB_API_KEY en settings.py")
-        
-        url = "https://api.imgbb.com/1/upload"
-        
-        # Enviar como formulario estándar (data=payload), SIN User-Agent de navegador
-        payload = {
-            'key': api_key,
-            'image': b64_image,
+        upload_url = f"{self.url}/storage/v1/object/{self.bucket}/{file_name}"
+        headers = {
+            "Authorization": f"Bearer {self.key}",
+            "Content-Type": "application/octet-stream",
         }
         
-        try:
-            response = requests.post(url, data=payload, timeout=30)
-            response.raise_for_status()
-            result = response.json()
-            
-            if result.get('success'):
-                return result['data']['url']
-            else:
-                error_msg = result.get('error', {}).get('message', 'Error desconocido')
-                raise ValueError(f"Error de ImgBB: {error_msg}")
-        except requests.exceptions.RequestException as e:
-            raise ValueError(f"Error de conexión con ImgBB: {str(e)}")
+        response = requests.post(upload_url, headers=headers, data=file_data, timeout=30)
+        if response.status_code not in (200, 201):
+            raise ValueError(f"Error Supabase: {response.status_code} - {response.text}")
+        
+        return f"{self.url}/storage/v1/object/public/{self.bucket}/{file_name}"
 
     def _open(self, name, mode='rb'):
-        raise NotImplementedError("ImgBBStorage no soporta apertura local.")
+        raise NotImplementedError("SupabaseStorage no soporta apertura local.")
 
     def exists(self, name):
         return False

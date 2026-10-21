@@ -2,14 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.utils import timezone
+from .storages import SupabaseStorage
+
+supabase_storage = SupabaseStorage()
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, blank=True, null=True)
     last_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=200)
-    # Se utiliza CharField para almacenar solo el nombre del archivo (ej: "perfil.jpg")
-    profile_pic = models.CharField(max_length=200, null=True, blank=True, default="perfil.jpg")
+    profile_pic = models.ImageField(storage=supabase_storage, null=True, blank=True)
     bio = models.TextField(null=True, blank=True)
     x = models.CharField(max_length=200, null=True, blank=True)
 
@@ -27,8 +29,7 @@ class Tag(models.Model):
 class Post(models.Model):
     headline = models.CharField(max_length=200)
     sub_headline = models.CharField(max_length=200, null=True, blank=True)
-    # Se utiliza CharField para almacenar solo el nombre del archivo (ej: "ecommerce_preview.jpg")
-    thumbnail = models.CharField(max_length=200, null=True, blank=True, default="ecommerce_preview.jpg")
+    thumbnail = models.ImageField(storage=supabase_storage, null=True, blank=True)
     body = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=False)

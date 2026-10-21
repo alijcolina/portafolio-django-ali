@@ -29,8 +29,11 @@
 		{% for post in posts %}
 		<div>
 			<div class="post">
-				<!-- Imagen estática: ecommerce_preview.jpg -->
-				<img class="thumbnail" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
+				{% if post.thumbnail %}
+					<img class="thumbnail" src="{{ post.thumbnail.url }}" alt="{{ post.headline }}">
+				{% else %}
+					<img class="thumbnail" src="{% static 'images/placeholder.png' %}" alt="{{ post.headline }}">
+				{% endif %}
 				<div class="post-preview">
 					<h6 class="post-title">{{post.headline}}</h6>
 					<p class="post-intro">{{post.sub_headline}}</p>
