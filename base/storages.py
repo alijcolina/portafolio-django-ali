@@ -10,6 +10,7 @@ class ImgBBStorage(Storage):
         content.seek(0)
         file_data = content.read()
         
+        # Codificar en base64 (método estándar para ImgBB)
         b64_image = base64.b64encode(file_data).decode('utf-8')
         
         api_key = getattr(settings, 'IMGBB_API_KEY', None)
@@ -17,13 +18,15 @@ class ImgBBStorage(Storage):
             raise ValueError("Falta IMGBB_API_KEY en settings.py")
         
         url = "https://api.imgbb.com/1/upload"
-        payload = {'key': api_key, 'image': b64_image}
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        
+        # Enviar como formulario estándar (data=payload), SIN User-Agent de navegador
+        payload = {
+            'key': api_key,
+            'image': b64_image,
         }
         
         try:
-            response = requests.post(url, data=payload, headers=headers, timeout=30)
+            response = requests.post(url, data=payload, timeout=30)
             response.raise_for_status()
             result = response.json()
             
