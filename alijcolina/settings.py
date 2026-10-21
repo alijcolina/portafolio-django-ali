@@ -17,9 +17,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+# Forzamos False en producción (Render), True en local si el .env lo dice
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+# Permitir todos los hosts temporalmente para evitar errores 500 por DisallowedHost
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -43,7 +45,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Para servir estáticos en producción
+    'whitenoise.middleware.WhiteNoiseMiddleware', # WhiteNoise para servir estáticos en Render
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,7 +59,7 @@ ROOT_URLCONF = 'alijcolina.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'base' / 'templates'], # Busca en ambas rutas
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,25 +97,21 @@ USE_I18N = True
 USE_TZ = True
 
 # ==============================================================================
-# CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS Y MEDIA
+# CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS (Solo static)
 # ==============================================================================
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    # BASE_DIR / 'media',  # Agregado para que WhiteNoise sirva las imágenes en Render
+    BASE_DIR / 'base' / 'templates' / 'static', # Por si tienes estáticos dentro de la app
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
 # ==============================================================================
-# CONFIGURACIÓN DE CORREO (Híbrida: Gmail para desarrollo, Resend para producción)
+# CONFIGURACIÓN DE CORREO (Híbrida)
 # ==============================================================================
 
 if DEBUG:
-    # DESARROLLO: Usamos Gmail SMTP (funciona localmente)
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_PORT = 587
@@ -121,15 +119,10 @@ if DEBUG:
     EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
     EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 else:
-    # PRODUCCIÓN: Usamos Resend (vía django-anymail para evitar bloqueos en Render)
     EMAIL_BACKEND = 'anymail.backends.resend.EmailBackend'
     ANYMAIL = {
         'RESEND_API_KEY': os.getenv('RESEND_API_KEY'),
     }
     DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Portafolio Ali <onboarding@resend.dev>')
 
-# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Servir archivos estáticos con WhiteNoise
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
