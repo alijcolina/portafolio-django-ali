@@ -1,0 +1,1 @@
+web: gunicorn alijcolina.wsgi --log-file -
