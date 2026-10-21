@@ -17,7 +17,7 @@ class SupabaseStorage(Storage):
         
         upload_url = f"{self.url}/storage/v1/object/{self.bucket}/{file_name}"
         
-        # CORREGIDO: Usar el encabezado 'apikey' en lugar de 'Authorization: Bearer'
+        # Usar el encabezado 'apikey' para las nuevas claves sb_secret_
         headers = {
             "apikey": self.key,
             "Content-Type": "application/octet-stream",
@@ -36,4 +36,8 @@ class SupabaseStorage(Storage):
         return False
 
     def url(self, name):
-        return name
+        # Si 'name' ya es una URL completa (como las que guarda _save), la devolvemos tal cual.
+        if name.startswith("http"):
+            return name
+        # Si es solo el nombre del archivo, construimos la URL pública de Supabase.
+        return f"{self.url}/storage/v1/object/public/{self.bucket}/{name}"
