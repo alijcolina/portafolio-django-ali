@@ -8,9 +8,10 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=200, blank=True, null=True)
     last_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=200)
-    profile_pic = models.ImageField(null=True, blank=True, upload_to="media", default="/user.png")
+    # CORREGIDO: upload_to vacío para evitar duplicación de rutas
+    profile_pic = models.ImageField(null=True, blank=True, upload_to="", default="user.png")
     bio = models.TextField(null=True, blank=True)
-    x = models.CharField(max_length=200, null=True, blank=True) # Red social X (antes Twitter)
+    x = models.CharField(max_length=200, null=True, blank=True)
 
     def __str__(self):
         name = str(self.first_name)
@@ -26,7 +27,8 @@ class Tag(models.Model):
 class Post(models.Model):
     headline = models.CharField(max_length=200)
     sub_headline = models.CharField(max_length=200, null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True, upload_to="media", default="/images/placeholder.png")
+    # CORREGIDO: upload_to vacío para evitar duplicación de rutas
+    thumbnail = models.ImageField(null=True, blank=True, upload_to="", default="placeholder.png")
     body = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=False)
@@ -39,7 +41,6 @@ class Post(models.Model):
         return self.headline
 
     def save(self, *args, **kwargs):
-        # Genera un slug único basado en el headline si no existe
         if self.slug == None:
             slug = slugify(self.headline)
             has_slug = Post.objects.filter(slug=slug).exists()

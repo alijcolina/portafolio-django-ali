@@ -99,7 +99,10 @@ USE_TZ = True
 # ==============================================================================
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+    BASE_DIR / 'media',  # Agregado para que WhiteNoise sirva las imágenes en Render
+]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
@@ -128,5 +131,5 @@ else:
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Al final del archivo settings.py
+# Servir archivos estáticos con WhiteNoise
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

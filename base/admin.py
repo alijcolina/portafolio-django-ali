@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Profile, Post, Tag, PostComment
+from django.contrib.auth.models import Group
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -21,3 +22,6 @@ class TagAdmin(admin.ModelAdmin):
 class PostCommentAdmin(admin.ModelAdmin):
     list_display = ('post', 'created')
     list_filter = ('created',)
+
+# Desregistrar Group para evitar el error 500 en el admin
+admin.site.unregister(Group)
