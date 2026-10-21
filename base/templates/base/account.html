@@ -3,38 +3,34 @@
 {% block content %}
 
 <style type="text/css">
-	#user_pic{ height: 200px; width: 200px; border-radius: 50%; border:5px solid #888; margin:0 auto; object-fit: cover; }
-	#user-info-box{ text-align: center; }
+    #user_pic{ height: 200px; width: 200px; border-radius: 50%; border:5px solid #888; margin:0 auto; object-fit: cover; }
+    #user-info-box{ text-align: center; }
 </style>
 
 <div class="main-container">
-	<br>
-	<div class="row">
-		<div class="col-md-4">
-			<div class="card card-body" id="user-info-box">
-				{% if profile.profile_pic %}
-					<img id="user_pic" src="{{profile.profile_pic.url}}">
-				{% else %}
-					<img id="user_pic" src="{% static 'images/user.png' %}">
-				{% endif %}
-				<br>
-				<h2>{{profile.first_name}} {{profile.last_name}}</h2>
-				<p>Email: {{profile.email}}</p>
-				<hr>
-				<p>{{profile.bio}}</p>
-				<hr>
-				<a class="btn btn-info btn-block" href="{% url 'update_profile' %}">Editar Perfil</a>
-			</div>
-		</div>
-		<div class="col-md-8">
-			<div class="card card-body">
-				<h3>Mi Actividad</h3>
-				<hr>
-				<p>Bienvenido a tu panel de control. Aquí puedes gestionar tu información personal y tus proyectos.</p>
-				<p>Si eres administrador, puedes crear, editar o eliminar proyectos desde el <a href="/admin/">Panel de Administración</a>.</p>
-			</div>
-		</div>
-	</div>
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-body" id="user-info-box">
+                <img id="user_pic" src="{% static 'images/' %}{{ profile.profile_pic }}" alt="Foto de perfil">
+                <br>
+                <h2>{{profile.first_name}} {{profile.last_name}}</h2>
+                <p>Email: {{profile.email}}</p>
+                <hr>
+                <p>{{profile.bio}}</p>
+                <hr>
+                <a class="btn btn-info btn-block" href="{% url 'update_profile' %}">Editar Perfil</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card card-body">
+                <h3>Mi Actividad</h3>
+                <hr>
+                <p>Bienvenido a tu panel de control. Aquí puedes gestionar tu información personal y tus proyectos.</p>
+                <p>Si eres administrador, puedes crear, editar o eliminar proyectos desde el <a href="/admin/">Panel de Administración</a>.</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock content %}

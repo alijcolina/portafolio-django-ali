@@ -1,0 +1,20 @@
+{% extends 'base/main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mt-5">
+    <h2>Sobre mí</h2>
+    <div class="card">
+        <div class="card-body" style="text-align: center;">
+            <img src="{% static 'images/' %}{{ profile.profile_pic }}" alt="Foto de perfil" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 20px;">
+            <h3>{{ profile.first_name }} {{ profile.last_name }}</h3>
+            <p><strong>Email:</strong> {{ profile.email }}</p>
+            <p>{{ profile.bio }}</p>
+            {% if profile.x %}
+                <a target="_blank" href="{{ profile.x }}" class="btn btn-primary">Mi GitHub / X</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

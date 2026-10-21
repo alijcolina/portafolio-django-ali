@@ -2,183 +2,148 @@
 {% load static %}
 <html>
 <head>
-	<title>Ali Colina | Portafolio</title>
-
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-47692315-56"></script>
-	<script>
-	  window.dataLayer = window.dataLayer || [];
-	  function gtag(){dataLayer.push(arguments);}
-	  gtag('js', new Date());
-	  gtag('config', 'UA-47692315-56');
-	</script>
-
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
-
-	<link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap" rel="stylesheet">
-
-	<link rel="stylesheet" type="text/css" href="{% static 'css/default.css' %}">
-	<link id="theme-style" rel="stylesheet" type="text/css" href="">
+    <title>Ali Colina | Portafolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@500&family=Russo+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/default.css' %}">
+    <link id="theme-style" rel="stylesheet" type="text/css" href="">
 </head>
 <body>
 
-	<section class="s1">
-		<div class="main-container">
-			<div class="greeting-wrapper">
-				<h1>Hola, soy {{ profile.first_name }} {{ profile.last_name }}</h1>
-			</div>
+    <section class="s1">
+        <div class="main-container">
+            <div class="greeting-wrapper">
+                <h1>Hola, soy {{ profile.first_name }} {{ profile.last_name }}</h1>
+            </div>
 
-			<div class="intro-wrapper">
-				{% include 'base/navbar.html' %}
+            <div class="intro-wrapper">
+                {% include 'base/navbar.html' %}
 
-				<div class="left-column">
-					{% if profile.profile_pic %}
-						<img id="profile_pic" src="{{ profile.profile_pic.url }}">
-					{% else %}
-						<img id="profile_pic" src="{% static 'images/user.png' %}">
-					{% endif %}
-					
-					<h5 style="text-align: center;line-height: 0;">Personalizar Tema</h5>
+                <div class="left-column">
+                    <!-- Imagen estática desde static/images/ -->
+                    <img id="profile_pic" src="{% static 'images/' %}{{ profile.profile_pic }}" alt="Foto de perfil">
+                    
+                    <h5 style="text-align: center;line-height: 0;">Personalizar Tema</h5>
+                    <div id="theme-options-wrapper">
+                        <div data-mode="light" id="light-mode" class="theme-dot"></div>
+                        <div data-mode="blue" id="blue-mode" class="theme-dot"></div>
+                        <div data-mode="green" id="green-mode" class="theme-dot"></div>
+                        <div data-mode="purple" id="purple-mode" class="theme-dot"></div>
+                    </div>
+                    <p id="settings-note">*La configuración del tema se guardará<br>para tu próxima visita</p>
+                </div>
 
-					<div id="theme-options-wrapper">
-						<div data-mode="light" id="light-mode" class="theme-dot"></div>
-						<div data-mode="blue" id="blue-mode" class="theme-dot"></div>
-						<div data-mode="green" id="green-mode" class="theme-dot"></div>
-						<div data-mode="purple" id="purple-mode" class="theme-dot"></div>
-					</div>
+                <div class="right-column">
+                    <div id="preview-shadow">
+                        <div id="preview">
+                            <div id="corner-tl" class="corner"></div>
+                            <div id="corner-tr" class="corner"></div>
+                            <h3>Qué hago</h3>
+                            <p>{{ profile.bio|truncatechars:150 }}</p>
+                            <div id="corner-br" class="corner"></div>
+                            <div id="corner-bl" class="corner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-					<p id="settings-note">*La configuración del tema se guardará<br>para tu próxima visita</p>
-				</div>
+    <section class="s2">
+        <div class="main-container">
+            <div class="about-wrapper">
+                <div class="about-me">
+                    <h4>Más sobre mí</h4>
+                    <p>{{ profile.bio }}</p>
 
-				<div class="right-column">
-					<div id="preview-shadow">
-						<div id="preview">
-							<div id="corner-tl" class="corner"></div>
-							<div id="corner-tr" class="corner"></div>
-							<h3>Qué hago</h3>
-							<p>{{ profile.bio|truncatechars:150 }}</p>
-							<div id="corner-br" class="corner"></div>
-							<div id="corner-bl" class="corner"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-
-	<section class="s2">
-		<div class="main-container">
-			<div class="about-wrapper">
-				<div class="about-me">
-					<h4>Más sobre mí</h4>
-					<p>{{ profile.bio }}</p>
-
-                    <!-- BOTONES DE DESCARGA DE CV Y TÍTULO (AQUÍ ES EL LUGAR CORRECTO) -->
                     <div style="margin-top: 20px; margin-bottom: 20px;">
-                        <a href="{% static 'docs/CV_Ali_Colina.pdf' %}" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 10px;">
-                            📄 Ver mi CV
-                        </a>
-                        <a href="{% static 'docs/CV_Ali_Colina.pdf' %}" download class="btn btn-secondary btn-sm" style="margin-right: 10px;">
-                            ⬇️ Descargar CV
-                        </a>
-                        <a href="{% static 'docs/Titulo_Ali_Colina.pdf' %}" target="_blank" class="btn btn-info btn-sm">
-                            🎓 Ver Título Universitario
-                        </a>
+                        <a href="{% static 'docs/CV_Ali_Colina.pdf' %}" target="_blank" class="btn btn-primary btn-sm" style="margin-right: 10px;">📄 Ver mi CV</a>
+                        <a href="{% static 'docs/CV_Ali_Colina.pdf' %}" download class="btn btn-secondary btn-sm" style="margin-right: 10px;">⬇️ Descargar CV</a>
                     </div>
                     <br>
+                    <hr>
 
-					<hr>
+                    <h4>ESPECIALIDADES</h4>
+                    <div id="skills">
+                        <ul>
+                            <li>Python</li>
+                            <li>Django</li>
+                            <li>JavaScript</li>
+                            <li>Angular</li>
+                            <li>Node.js</li>
+                        </ul>
+                        <ul>
+                            <li>Diseño Gráfico</li>
+                            <li>Photoshop</li>
+                            <li>Canva</li>
+                            <li>Marketing Digital</li>
+                            <li>HTML/CSS</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <h3>Encuéntrame en</h3>
+                    {% if profile.x %}
+                        <a target="_blank" href="{{ profile.x }}">Mi GitHub / Perfil Profesional</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
 
-					<h4>ESPECIALIDADES</h4>
-					<div id="skills">
-						<ul>
-							<li>Python</li>
-							<li>Django</li>
-							<li>JavaScript</li>
-							<li>Angular</li>
-							<li>Node.js</li>
-						</ul>
-						<ul>
-							<li>Diseño Gráfico</li>
-							<li>Photoshop</li>
-							<li>Canva</li>
-							<li>Marketing Digital</li>
-							<li>HTML/CSS</li>
-						</ul>
-					</div>
-				</div>
-				
-				<div class="social-links">
-					<h3>Encuéntrame en</h3>
-					{% if profile.x %}
-						<a target="_blank" href="{{ profile.x }}">Mi GitHub / Perfil Profesional</a>
-					{% endif %}
-				</div>
-			</div>
-		</div>
-	</section>
+    <section class="s1">
+        <div class="main-container">
+            <h3 style="text-align: center;">Algunos de mis proyectos</h3>
+            <div class="post-wrapper">
+                {% for post in posts %}
+                <div>
+                    <div class="post">
+                        <!-- Miniatura estática desde static/images/ -->
+                        <img class="thumbnail" src="{% static 'images/' %}{{ post.thumbnail }}" alt="{{ post.headline }}">
+                        <div class="post-preview">
+                            <h6 class="post-title">{{post.headline}}</h6>
+                            <p class="post-intro">{{post.sub_headline}}</p>
+                            <a href="{% url 'post' post.slug %}">Leer más</a>
+                            {% if post.project_url %}
+                                <a href="{{ post.project_url }}" target="_blank" class="btn btn-sm btn-success" style="margin-left: 10px;">Ver Proyecto en Vivo</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                    <p style="text-align: center;">Aún no hay proyectos destacados.</p>
+                {% endfor %}
+            </div>
+            <p align="center">
+                <a href="{% url 'posts' %}">Ver más</a>
+            </p>
+        </div>
+    </section>
 
-	<section class="s1">
-		<div class="main-container">
-			<h3 style="text-align: center;">Algunos de mis proyectos</h3>
+    <section class="s2">
+        <div class="main-container">
+            <a name="contact"></a>
+            <h3 style="text-align: center;">Contacto</h3>
+            <form id="contact-form" method="POST" action="{% url 'send_email' %}">
+                {% csrf_token %}
+                <label>Nombre</label>
+                <input required class="input-field" type="text" name="name">
+                <label>Asunto</label>
+                <input required class="input-field" type="text" name="subject">
+                <label>Email</label>
+                <input required class="input-field" type="text" name="email">
+                <label>Mensaje</label>
+                <textarea required class="input-field" name="message"></textarea>
+                <input id="submit-btn" type="submit" value="Enviar">
+            </form>
+        </div>
+    </section> 
 
-			<div class="post-wrapper">
-				{% for post in posts %}
-				<div>
-					<div class="post">
-						{% if post.thumbnail %}
-							<img class="thumbnail" src="{{post.thumbnail.url}}">
-						{% endif %}
-						<div class="post-preview">
-							<h6 class="post-title">{{post.headline}}</h6>
-							<p class="post-intro">{{post.sub_headline}}</p>
-							<a href="{% url 'post' post.slug %}">Leer más</a>
-							{% if post.project_url %}
-								<a href="{{ post.project_url }}" target="_blank" class="btn btn-sm btn-success" style="margin-left: 10px;">Ver Proyecto en Vivo</a>
-							{% endif %}
-						</div>
-					</div>
-				</div>
-				{% empty %}
-					<p style="text-align: center;">Aún no hay proyectos destacados. Ve al Admin y crea uno.</p>
-				{% endfor %}
-			</div>
-
-			<p align="center">
-				<a href="{% url 'posts' %}">Ver más</a>
-			</p>
-		</div>
-	</section>
-
-	<section class="s2">
-		<div class="main-container">
-			<a name="contact"></a>
-			<h3 style="text-align: center;">Contacto</h3>
-
-			<form id="contact-form" method="POST" action="{% url 'send_email' %}">
-				{% csrf_token %}
-				
-				<label>Nombre</label>
-				<input required class="input-field" type="text" name="name">
-
-				<label>Asunto</label>
-				<input required class="input-field" type="text" name="subject">
-
-				<label>Email</label>
-				<input required class="input-field" type="text" name="email">
-
-				<label>Mensaje</label>
-				<textarea required class="input-field" name="message"></textarea>
-
-				<input id="submit-btn" type="submit" value="Enviar">
-			</form>
-		</div>
-	</section> 
-
-	<script type="text/javascript">
-		let static = "{% static 'css' %}"
-	</script>
-
-	<script type="text/javascript" src="{% static 'js/script.js' %}"></script>
+    <script type="text/javascript">
+        let static = "{% static 'css' %}"
+    </script>
+    <script type="text/javascript" src="{% static 'js/script.js' %}"></script>
 </body>
 </html>

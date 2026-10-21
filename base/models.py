@@ -8,8 +8,8 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=200, blank=True, null=True)
     last_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=200)
-    # CORREGIDO: upload_to vacío para evitar duplicación de rutas
-    profile_pic = models.ImageField(null=True, blank=True, upload_to="", default="user.png")
+    # CAMBIO: Ahora guardamos solo el nombre del archivo (ej: "perfil.jpg")
+    profile_pic = models.CharField(max_length=200, null=True, blank=True, default="user.png")
     bio = models.TextField(null=True, blank=True)
     x = models.CharField(max_length=200, null=True, blank=True)
 
@@ -27,8 +27,8 @@ class Tag(models.Model):
 class Post(models.Model):
     headline = models.CharField(max_length=200)
     sub_headline = models.CharField(max_length=200, null=True, blank=True)
-    # CORREGIDO: upload_to vacío para evitar duplicación de rutas
-    thumbnail = models.ImageField(null=True, blank=True, upload_to="", default="placeholder.png")
+    # CAMBIO: Ahora guardamos solo el nombre del archivo (ej: "ecommerce_preview.jpg")
+    thumbnail = models.CharField(max_length=200, null=True, blank=True, default="placeholder.png")
     body = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=False)
