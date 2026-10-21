@@ -16,8 +16,10 @@ class SupabaseStorage(Storage):
         file_name = name.replace(" ", "_")
         
         upload_url = f"{self.url}/storage/v1/object/{self.bucket}/{file_name}"
+        
+        # CORREGIDO: Usar el encabezado 'apikey' en lugar de 'Authorization: Bearer'
         headers = {
-            "Authorization": f"Bearer {self.key}",
+            "apikey": self.key,
             "Content-Type": "application/octet-stream",
         }
         
