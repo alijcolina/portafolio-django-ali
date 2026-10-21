@@ -101,7 +101,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'media',  # Agregado para que WhiteNoise sirva las imágenes en Render
+    # BASE_DIR / 'media',  # Agregado para que WhiteNoise sirva las imágenes en Render
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
