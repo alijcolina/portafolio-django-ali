@@ -5,6 +5,7 @@ Modernizado para Django 5.
 
 from pathlib import Path
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 # Cargar variables de entorno desde .env
@@ -17,10 +18,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-fallback-key-change-me')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Forzamos False en producción (Render), True en local si el .env lo dice
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# Permitir todos los hosts temporalmente para evitar errores 500 por DisallowedHost
+# Permitir todos los hosts en Render
 ALLOWED_HOSTS = ['*']
 
 # Application definition
@@ -45,7 +45,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # WhiteNoise para servir estáticos en Render
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,7 +59,10 @@ ROOT_URLCONF = 'alijcolina.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'base' / 'templates'], # Busca en ambas rutas
+        'DIRS': [
+            BASE_DIR / 'templates',
+            BASE_DIR / 'base' / 'templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,13 +77,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'alijcolina.wsgi.application'
 
-# Database (SQLite por ahora)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# ==============================================================================
+# BASE DE DATOS (Neon PostgreSQL en Producción, SQLite en Local)
+# ==============================================================================
+DATABASE_URL = os.getenv('DATABASE_URL')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL, 
+            conn_max_age=600, 
+            ssl_require=True
+        )
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -97,32 +113,23 @@ USE_I18N = True
 USE_TZ = True
 
 # ==============================================================================
-# CONFIGURACIÓN DE ARCHIVOS ESTÁTICOS (Solo static)
+# ARCHIVOS ESTÁTICOS
 # ==============================================================================
-
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'base' / 'templates' / 'static', # Por si tienes estáticos dentro de la app
 ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ==============================================================================
-# CONFIGURACIÓN DE CORREO (Híbrida)
+# CORREO (Resend)
 # ==============================================================================
+EMAIL_BACKEND = 'anymail.backends.resend.EmailBackend'
+ANYMAIL = {
+    'RESEND_API_KEY': os.getenv('RESEND_API_KEY'),
+}
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Portafolio Ali <onboarding@resend.dev>')
 
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_PORT = 587
-    EMAIL_USE_TLS = True
-    EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-    EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-else:
-    EMAIL_BACKEND = 'anymail.backends.resend.EmailBackend'
-    ANYMAIL = {
-        'RESEND_API_KEY': os.getenv('RESEND_API_KEY'),
-    }
-    DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Portafolio Ali <onboarding@resend.dev>')
-
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
