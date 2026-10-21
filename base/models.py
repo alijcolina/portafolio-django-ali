@@ -8,7 +8,7 @@ class Profile(models.Model):
     first_name = models.CharField(max_length=200, blank=True, null=True)
     last_name = models.CharField(max_length=200, blank=True, null=True)
     email = models.EmailField(max_length=200)
-    profile_pic = models.ImageField(null=True, blank=True, upload_to="images", default="/user.png")
+    profile_pic = models.ImageField(null=True, blank=True, upload_to="media", default="/user.png")
     bio = models.TextField(null=True, blank=True)
     x = models.CharField(max_length=200, null=True, blank=True) # Red social X (antes Twitter)
 
@@ -26,7 +26,7 @@ class Tag(models.Model):
 class Post(models.Model):
     headline = models.CharField(max_length=200)
     sub_headline = models.CharField(max_length=200, null=True, blank=True)
-    thumbnail = models.ImageField(null=True, blank=True, upload_to="images", default="/images/placeholder.png")
+    thumbnail = models.ImageField(null=True, blank=True, upload_to="media", default="/images/placeholder.png")
     body = models.TextField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     active = models.BooleanField(default=False)
