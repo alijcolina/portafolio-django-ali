@@ -1,4 +1,3 @@
-import base64
 import requests
 from django.conf import settings
 from django.core.files.storage import Storage
@@ -10,21 +9,27 @@ class ImgBBStorage(Storage):
         content.seek(0)
         file_data = content.read()
         
-        # Codificar en base64 (método recomendado por ImgBB)
-        b64_image = base64.b64encode(file_data).decode('utf-8')
-        
         api_key = getattr(settings, 'IMGBB_API_KEY', None)
         if not api_key:
             raise ValueError("Falta IMGBB_API_KEY en settings.py")
         
-        # Enviar como formulario estándar (no multipart)
-        payload = {
-            'key': api_key,
-            'image': b64_image,
+        url = "https://api.imgbb.com/1/upload"
+        
+        # Enviar como multipart/form-data (el método que ImgBB espera para archivos binarios)
+        files = {
+            'image': (name, file_data, content.content_type)
+        }
+        data = {
+            'key': api_key
+        }
+        
+        # User-Agent de navegador para evitar el bloqueo por "bot"
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
         }
         
         try:
-            response = requests.post('https://api.imgbb.com/1/upload', data=payload, timeout=30)
+            response = requests.post(url, data=data, files=files, headers=headers, timeout=30)
             response.raise_for_status()
             result = response.json()
             
