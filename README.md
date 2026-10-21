@@ -1,17 +1,23 @@
-# django-portfolio-website
+# Portafolio Personal - Ali Colina
 
-GETTING STARTED
+Bienvenido a mi repositorio. Este es mi portafolio profesional desarrollado con **Django 5**, donde presento mi experiencia como Desarrollador Web Full-Stack y TSU en Marketing.
 
-1 - Install requirements
-  pip install -r requirements.txt
- 
-2 - Runserver on port 8000
+## 🚀 Características
+- Backend desarrollado con Django 5.
+- Gestión de contenido dinámico (proyectos y perfil) a través del panel de administración.
+- Diseño responsivo y personalizable.
+- Formulario de contacto con envío de correos (configurado para producción con Resend).
+- Desplegado en Render.
 
-    python manage.py runserver
-    
-    http://127.0.0.1:8000/
-    
-3 - Create superuser
-    python manage.py createsuperuser
-    
-![](static/images/personal-blog.jpg)
+## 🛠️ Tecnologías utilizadas
+- Python / Django
+- HTML5 / CSS3 / JavaScript
+- SQLite (Desarrollo) 
+- Gunicorn / WhiteNoise
+- Render (Despliegue)
+
+## 🌐 Demo en vivo
+Puedes ver el portafolio funcionando aquí: [Próximamente enlace de Render]
+
+## 📄 Licencia
+Este proyecto es de uso personal y educativo.
